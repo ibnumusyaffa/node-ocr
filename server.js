@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 const app = express();
-const port = 3000;
-require('dotenv').config()
+const port = process.env.NODE_PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -12,5 +12,5 @@ app.listen(port, () => {
   console.log(`Server listering at port ${port}`);
 });
 
-
-module.exports = app
+require('./app/routes')(app)
+module.exports = app;
