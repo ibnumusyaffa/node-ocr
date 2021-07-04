@@ -1,11 +1,8 @@
 module.exports = (app) => {
-  var router = require("express").Router();
+  const router = require("express").Router();
+  const user = require("../controllers/user.controller");
 
-  router.get("/", (req, res) => {
-    res.send({
-      message: "success",
-    });
-  });
+  router.get("/", user.detail);
 
-  app.use(router)
+  app.use(router);
 };

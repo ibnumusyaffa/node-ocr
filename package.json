@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --recursive 'tests/*.js' ",
-    "test-watch": "cross-env NODE_ENV=test  mocha --recursive --watch 'tests/*.js' ",
+    "test-watch": "cross-env NODE_ENV=test mocha --recursive --watch 'tests/*.js' ",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
