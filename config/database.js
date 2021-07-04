@@ -1,9 +1,9 @@
-if (process.env.NODE_ENV == "test") {
-  require("dotenv").config({
-    path: path.resolve(process.cwd(), ".env.test"),
+if (process.env.NODE_ENV == 'test') {
+  require('dotenv').config({
+    path: path.resolve(process.cwd(), '.env.test'),
   });
 } else {
-  require("dotenv").config();
+  require('dotenv').config();
 }
 
 module.exports = {
