@@ -2,9 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const compression = require('compression');
-const helmet = require("helmet");
-const morgan = require('morgan')
+const helmet = require('helmet');
+const morgan = require('morgan');
+const consola = require('consola');
 
+if (process.env.NODE_ENV !== 'production') {
+  consola.wrapAll();
+}
 
 if (process.env.NODE_ENV == 'test') {
   require('dotenv').config({
@@ -24,14 +28,11 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(compression())
+app.use(compression());
 app.use(helmet());
-app.use(morgan('dev'))
+app.use(morgan('dev'));
 
-app.listen(port, () => {
-  console.log(`Server listering at port ${port}`);
-  console.log(`ENV : ${process.env.NODE_ENV}`);
-});
+app.listen(port, () => {});
 
 require('./app/routes')(app);
 module.exports = app;
