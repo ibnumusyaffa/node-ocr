@@ -3,6 +3,8 @@ const cors = require('cors');
 const path = require('path');
 const compression = require('compression');
 const helmet = require("helmet");
+const morgan = require('morgan')
+
 
 if (process.env.NODE_ENV == 'test') {
   require('dotenv').config({
@@ -24,6 +26,7 @@ app.use(
 app.use(express.json());
 app.use(compression())
 app.use(helmet());
+app.use(morgan('dev'))
 
 app.listen(port, () => {
   console.log(`Server listering at port ${port}`);
