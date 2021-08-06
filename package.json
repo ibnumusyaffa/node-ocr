@@ -11,7 +11,8 @@
     "lint": "eslint --ignore-path .gitignore  --ext .js,.ts,.tsx .",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|jsx|tsx)\"",
     "check-format": "prettier --ignore-path .gitignore --check \"**/*.+(js|json|jsx|tsx)\"",
-    "validate": "npm run lint && npm run format && npm run test"
+    "validate": "npm run lint && npm run format && npm run test",
+    "db:migrate": "npx sequelize-cli db:migrate"
   },
   "author": "",
   "license": "ISC",
@@ -36,7 +37,7 @@
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "mocha": "^9.0.2",
-    "nodemon": "^2.0.9",
+    "nodemon": "^2.0.12",
     "prettier": "2.3.2",
     "sequelize-cli": "^6.2.0",
     "supertest": "^6.1.3"
