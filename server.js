@@ -12,7 +12,7 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.NODE_PORT || 3000;
-console.log(process.env.DB_PORT)
+
 app.use(cors());
 app.use(
   express.urlencoded({
