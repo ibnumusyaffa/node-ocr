@@ -15,17 +15,17 @@ const storage = multer.diskStorage({
 const maxSize = 2 * 1024 * 1024; // for 2MB
 const upload = multer({
   storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype == 'image/png' ||
-      file.mimetype == 'image/jpg' ||
-      file.mimetype == 'image/jpeg'
-    ) {
-      cb(null, true);
-    } else {
-      cb(new Error('Hanya format .png, .jpg and .jpeg yang dibolehkan'));
-    }
-  },
+  // fileFilter: (req, file, cb) => {
+  //   if (
+  //     file.mimetype == 'image/png' ||
+  //     file.mimetype == 'image/jpg' ||
+  //     file.mimetype == 'image/jpeg'
+  //   ) {
+  //     cb(null, true);
+  //   } else {
+  //     cb(new Error('Hanya format .png, .jpg and .jpeg yang dibolehkan'));
+  //   }
+  // },
   limits: { fileSize: maxSize },
 }).single('image');
 
