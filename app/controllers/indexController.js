@@ -48,8 +48,8 @@ exports.index = async (req, res, next) => {
     let text = await tesseract.recognize(outputCrop);
     fs.unlink(req.file.path);
     fs.unlink(`./storage/app/${outputImage}.1.jpeg`);
-    // fs.unlink(outputCrop);
-    return res.send({ message: text.replace(/[^0-9]/g, '') });
+    fs.unlink(outputCrop);
+    return res.send({ result: text.replace(/[^0-9]/g, '') });
   } catch (error) {
     res.send({
       result: error,
