@@ -1,50 +1,43 @@
-const { PDFNet } = require('@pdftron/pdfnet-node');
+const { nanoid } = require('nanoid');
+const { fromPath } = require('pdf2pic');
+const sharp = require('sharp');
+const tesseract = require('node-tesseract-ocr');
+const fs = require('fs').promises;
+
+//PO     .extract({ left: 660, top: 450, width: 360, height: 120 })
+//PR .extract({ left: 800, top: 450, width: 360, height: 120 })
+
 
 exports.index = async (req, res, next) => {
   try {
-    await PDFNet.initialize(
-      'demo:1634379058697:78a1fe8f0300000000861dbdb2cd9281480c0902d97794810747724cbd'
-    );
-    await PDFNet.runWithCleanup(async () => {
-      const pdfdoc = await PDFNet.PDFDoc.createFromFilePath(req.file.path);
-      await pdfdoc.initSecurityHandler();
-      const page = await pdfdoc.getPage(1);
-      const txt = await PDFNet.TextExtractor.create();
+    let outputImage = nanoid();
+    let outputCrop = `./storage/app/${nanoid()}.jpeg`;
+    const options = {
+      saveFilename: outputImage,
+      savePath: './storage/app',
+      format: 'jpeg',
+      quality: 500,
+      density: 500,
+      width: 1000 * 3,
+      height: 700 * 3,
+    };
+    const storeAsImage = fromPath(req.file.path, options);
+    const pageToConvertAsImage = 1;
 
-      let rect = null;
-      let textResult = '';
-      if (req.body.type == 'pr') {
-        rect = new PDFNet.Rect(250, 449, 397, 450);
-        txt.begin(page, rect);
-        textResult = await txt.getAsText();
-        if (textResult) {
-          textResult = textResult.split('/')[0];
-        }
-      }
-      if (req.body.type == 'sa') {
-        rect = new PDFNet.Rect(400, 490, 912, 500);
-        txt.begin(page, rect);
-        textResult = await txt.getAsText();
-        if (textResult) {
-          textResult = textResult.split('/')[0];
-        }
-      }
-      if (req.body.type == 'po') {
-        rect = new PDFNet.Rect(200, 441, 350, 442);
-        txt.begin(page, rect);
-        textResult = await txt.getAsText();
-        if (textResult) {
-          textResult = textResult.split('/')[0];
-        }
-      }
+    await storeAsImage(pageToConvertAsImage);
 
-      res.send({
-        result: textResult,
-      });
-    });
+    await sharp(`./storage/app/${outputImage}.1.jpeg`)
+      .extract({ left: 800, top: 450, width: 360, height: 120 })
+      .toFile(outputCrop);
+
+    let text = await tesseract.recognize(outputCrop);
+    fs.unlink(req.file.path);
+    // fs.unlink(`./storage/app/${outputImage}.1.jpeg`);
+    fs.unlink(outputCrop);
+    return res.send({ message: text.replace(/[^0-9]/g, '') });
   } catch (error) {
     res.send({
-      result: 'error',
+      result: error,
     });
   }
 };
