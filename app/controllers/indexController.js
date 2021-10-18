@@ -25,15 +25,30 @@ exports.index = async (req, res, next) => {
     const pageToConvertAsImage = 1;
 
     await storeAsImage(pageToConvertAsImage);
+    let cordinate = {}
+
+    if (req.body.type == "pr") {
+      cordinate = { left: 800, top: 450, width: 360, height: 120 }
+    }
+
+    if (req.body.type == "po") {
+      cordinate = { left: 660, top: 450, width: 360, height: 120 }
+    }
+
+    if (req.body.type == "sa") {
+      cordinate = { left: 1150, top: 300, width: 600, height: 100 }
+    }
+
+
 
     await sharp(`./storage/app/${outputImage}.1.jpeg`)
-      .extract({ left: 800, top: 450, width: 360, height: 120 })
+      .extract(cordinate)
       .toFile(outputCrop);
 
     let text = await tesseract.recognize(outputCrop);
     fs.unlink(req.file.path);
-    // fs.unlink(`./storage/app/${outputImage}.1.jpeg`);
-    fs.unlink(outputCrop);
+    fs.unlink(`./storage/app/${outputImage}.1.jpeg`);
+    // fs.unlink(outputCrop);
     return res.send({ message: text.replace(/[^0-9]/g, '') });
   } catch (error) {
     res.send({
