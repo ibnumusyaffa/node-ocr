@@ -13,10 +13,10 @@ exports.index = async (req, res, next) => {
       const img = await pdfDoc.embedPng(fs2.readFileSync('./signature.png'));
       const imagePage = pdfDoc.getPage(0);
       imagePage.drawImage(img, {
-        x: 100,
-        y: 100,
-        width: 5 * 50,
-        height: 2 * 50,
+        x: 25,
+        y: 75,
+        width: 5 * 40,
+        height: 2 * 40,
       });
 
       const pdfBytes = await pdfDoc.save();
