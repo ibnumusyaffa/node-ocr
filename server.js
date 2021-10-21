@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(compression());
 app.use(helmet());
 app.use(morgan('dev'));
-
+app.use(express.static('storage/app'))
 app.listen(port, () => {});
 
 require('./app/routes')(app);
